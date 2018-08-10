@@ -8,7 +8,7 @@ namespace zSpaceWinApp.Processor
     public class DownloadProcessor
     {
         private readonly Queue<KeyValuePair<Delegate, object[]>> Queue = new Queue<KeyValuePair<Delegate, object[]>>();
-        private HashSet<String> set = new HashSet<string>();
+        private HashSet<string> set = new HashSet<string>();
         private readonly object queueSync = new object();
         public DownloadProcessor ()
         {
