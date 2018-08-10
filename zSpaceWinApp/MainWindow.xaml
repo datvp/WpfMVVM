@@ -14,14 +14,56 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        
+        Name="main"
         DataContext="{StaticResource MainVM}"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <materialDesign:Card Padding="32" Margin="16">
-            <!--<TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">My First Material Design App</TextBlock>-->
-            <Button Style="{StaticResource MaterialDesignRaisedButton}"    
-                    Width="100" Content="Click Me" Command="{Binding ButtonClickCommand}"></Button>
-        </materialDesign:Card>
+
+
+        <ListBox Margin="2" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ItemsSource="{Binding ProgramList}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ProgramName}" />
+                        <ProgressBar Grid.Row="0" Width="100"  Grid.Column="1" Minimum="0" Maximum="{Binding TotalSize}" Value="{Binding Progress}" />
+                        <Button Grid.Column="2" Style="{StaticResource MaterialDesignRaisedButton}"   Margin="10" 
+                            Width="100" Content="{Binding ButtonText}" Command="{Binding ClickCommand}" Tag="3" CommandParameter="{Binding Position}"></Button>
+                    </Grid>
+                    <!--<Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="100" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding ProgramName}" />
+                        <materialDesign:Card Padding="32" Margin="16">
+                            -->
+                    <!--<TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">My First Material Design App</TextBlock>-->
+                    <!--
+                            <Button Style="{StaticResource MaterialDesignRaisedButton}"    
+                            Width="100" Content="Click Me" Command="{Binding ButtonClickCommand}" Tag="3" CommandParameter="{Binding ElementName=btn, Path=tab}"></Button>
+                        </materialDesign:Card>
+                        <ProgressBar Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding Completion}" />
+                    </Grid>-->
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <!--<Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding ProgramName}" />
+            <materialDesign:Card Padding="32" Margin="16">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}"    
+                            Width="100" Content="vbd" Command="{Binding ButtonClickCommand}" Tag="3" CommandParameter="{Binding ElementName=btn, Path=tab}"></Button>
+            </materialDesign:Card>
+        </Grid>-->
     </Grid>
 </Window>
