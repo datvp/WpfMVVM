@@ -51,71 +51,27 @@ namespace zSpaceWinApp.Processor
             }
         }
 
-        public static void installApp(string executableFilePath)
-        {
-            PowerShell powerShell = null;
-            Console.WriteLine(" ");
-            Console.WriteLine("Deploying application...");
-            try
-            {
-                using (powerShell = PowerShell.Create())
-                {
-                    //here “executableFilePath” need to use in place of “'D:\Softs\Snoop.msi'”
-                    //but I am using the path directly in the script.
-                    powerShell.AddScript(@"$setup=Start-Process 'D:\Softs\SlackSetup.exe' -ArgumentList '/qr' -Wait -PassThru");
-
-                    Collection<PSObject> PSOutput = powerShell.Invoke();
-                    foreach (PSObject outputItem in PSOutput)
-                    {
-                        if (outputItem != null)
-                        {
-                            Console.WriteLine(outputItem.BaseObject.GetType().FullName);
-                            Console.WriteLine(outputItem.BaseObject.ToString() + "\n");
-                        }
-                    }
-
-                    if (powerShell.Streams.Error.Count > 0)
-                    {
-                        string temp = powerShell.Streams.Error.First().ToString();
-                        Console.WriteLine("Error: {0}", temp);
-                    }
-                    else
-                        Console.WriteLine("Installation has completed successfully.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error occured: {0}", ex.InnerException);
-                //throw;
-            }
-            finally
-            {
-                if (powerShell != null)
-                    powerShell.Dispose();
-            }
-
-        }
         private void doWork(object sender, DoWorkEventArgs e)
         {
             DownloadBW threat = (DownloadBW) sender;
             
             if(threat != null)
             {
-                installApp(@"D:\Softs\Snoop.msi");
-                //int count = 0;
-                //while (count < threat.program.Position * 100 )
-                //{
-                //    if(threat.program.Status != Model.Program.DOWNLOAD)
-                //    {
-                //        threat.CancelAsync();
-                //        Console.Out.WriteLine(String.Format("cancel: '{0}' progress: '{1}'", threat.program.Position, count));
-                //        break;
-                //    }
-                //    Console.Out.WriteLine(String.Format("process: '{0}' progress: '{1}'", threat.program.Position, count));
-                //    Thread.Sleep(1);
-                //    threat.ReportProgress(count);
-                //    count++;
-                //}
+                //installApp(@"D:\Softs\Snoop.msi");
+                int count = 0;
+                while (count < threat.program.Position * 100)
+                {
+                    if (threat.program.Status != Model.Program.DOWNLOADING)
+                    {
+                        threat.CancelAsync();
+                        Console.Out.WriteLine(String.Format("cancel: '{0}' progress: '{1}'", threat.program.Position, count));
+                        break;
+                    }
+                    Console.Out.WriteLine(String.Format("process: '{0}' progress: '{1}'", threat.program.Position, count));
+                    Thread.Sleep(1);
+                    threat.ReportProgress(count);
+                    count++;
+                }
             }
 
         }

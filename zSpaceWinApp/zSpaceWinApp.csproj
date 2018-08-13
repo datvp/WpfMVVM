@@ -78,6 +78,7 @@
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\MainModel.cs" />
     <Compile Include="Model\Program.cs" />
+    <Compile Include="Processor\InstallAppProcessor.cs" />
     <Compile Include="Processor\IState.cs" />
     <Compile Include="Processor\DownloadProcessor.cs" />
     <Compile Include="Processor\MainProcessor.cs" />
@@ -137,6 +138,17 @@
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\AWSSDK.S3.3.3.20\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="WindowsInstaller">
+      <Guid>{000C1092-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>1033</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
