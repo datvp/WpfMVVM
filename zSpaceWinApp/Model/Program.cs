@@ -10,7 +10,7 @@ namespace zSpaceWinApp.Model
     public class Program : BaseModel
     {
         public static int NORMAL = 1;
-        public static int DOWNLOAD = 2;
+        public static int DOWNLOAD = 2;        
 
         private int position;
         private string v1;
@@ -19,6 +19,7 @@ namespace zSpaceWinApp.Model
         private int progress;
         private string buttonText = "download";
         private int status = NORMAL;
+        private bool _isPause = false;
 
         public Program(string v1, string v2)
         {
@@ -37,6 +38,7 @@ namespace zSpaceWinApp.Model
 
         public int Status { get { return status;  } set { status = value; OnPropertyChanged(); } }
 
+        public bool IsPause { get { return _isPause; } set { _isPause = value; OnPropertyChanged(); } }
         public ICommand ClickCommand { get; set; }
     }
 }

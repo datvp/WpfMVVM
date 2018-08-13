@@ -19,7 +19,7 @@ namespace zSpaceWinApp.ViewModel
         public ObservableCollection<Model.Program> ProgramList
         {
             get { return programList; }
-            set { programList = value; }
+            set { programList = value; OnPropertyChanged(); }
         }
 
         public void initData()
@@ -60,6 +60,7 @@ namespace zSpaceWinApp.ViewModel
                         programRunning.ButtonText = "stop";
                     } else
                     {
+                        programRunning.IsPause = true;
                         programRunning.Status = Model.Program.NORMAL;
                         programRunning.ButtonText = "download";
 
