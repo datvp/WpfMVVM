@@ -18,9 +18,12 @@
         DataContext="{StaticResource MainVM}"
         Title="MainWindow" Height="437.5" Width="607.57">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
 
-
-        <ListBox Margin="2" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ItemsSource="{Binding ProgramList}">
+        <ListBox Grid.Row="0" Margin="2" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ItemsSource="{Binding ProgramList}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -61,16 +64,38 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <!--<Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="100" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding ProgramName}" />
-            <materialDesign:Card Padding="32" Margin="16">
-                <Button Style="{StaticResource MaterialDesignRaisedButton}"    
-                            Width="100" Content="vbd" Command="{Binding ButtonClickCommand}" Tag="3" CommandParameter="{Binding ElementName=btn, Path=tab}"></Button>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>            
+            <materialDesign:Card Grid.Row="0">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Content="Check Power" Command="{Binding CheckPowerStatusCommand}"></Button>
             </materialDesign:Card>
-        </Grid>-->
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <TextBlock Text="AC Line:" Margin="20 10 20 0" FontWeight="Bold"/>
+                <TextBlock Text="{Binding MainModel.ACLineStatus}" Margin="20 10 20 0"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBlock Text="Battery:" Margin="20 10 20 0" FontWeight="Bold"/>
+                <TextBlock Text="{Binding MainModel.BatteryFlag}" Margin="20 10 20 0" />
+            </StackPanel>
+            <StackPanel Grid.Row="3" Orientation="Horizontal">
+                <TextBlock Text="Battery life %:" Margin="20 10 20 0" FontWeight="Bold"/>
+                <TextBlock Text="{Binding MainModel.BatteryLifePercent}" Margin="20 10 20 0"/>
+            </StackPanel>
+            <StackPanel Grid.Row="4" Orientation="Horizontal">
+                <TextBlock Text="Battery Life Time:" Margin="20 10 20 0" FontWeight="Bold"/>
+                <TextBlock Text="{Binding MainModel.BatteryLifeTime}" Margin="20 10 20 0"/>
+            </StackPanel>
+            <StackPanel Grid.Row="5" Orientation="Horizontal">
+                <TextBlock Text="Battery Full Life Time:" Margin="20 10 20 0" FontWeight="Bold"/>
+                <TextBlock Text="{Binding MainModel.BatteryFullLifeTime}" Margin="20 10 20 0"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

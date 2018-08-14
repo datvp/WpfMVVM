@@ -3,24 +3,41 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Windows.Input;
 using WindowsInstaller;
 using zSpaceWinApp.Processor;
+using zSpaceWinApp.Model;
 
 namespace zSpaceWinApp.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
         private DownloadProcessor download = new DownloadProcessor();
-        private ObservableCollection<Model.Program> programList = new ObservableCollection<Model.Program>();
+        private ObservableCollection<Program> programList = new ObservableCollection<Program>();
+        private MainModel _MainModel = new MainModel();
         private InstallAppProcessor installProcessor = new InstallAppProcessor();
-        public ObservableCollection<Model.Program> ProgramList
+        public ObservableCollection<Program> ProgramList
         {
             get { return programList; }
             set { programList = value; OnPropertyChanged(); }
         }
+        public MainModel MainModel
+        {
+            get
+            {
+                return _MainModel;
+            }
+
+            set
+            {
+                _MainModel = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void initData()
         {
+            // detect driver via registry
             //string registry_key = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
             //using (Microsoft.Win32.RegistryKey key = Registry.LocalMachine.OpenSubKey(registry_key))
             //{
@@ -99,7 +116,13 @@ namespace zSpaceWinApp.ViewModel
 
         public MainViewModel()
         {
-            initData();           
+            CheckPowerStatusCommand = new RelayCommand<object>((p) => { return true; }, (p) => {
+                MainModel = MainProcessor.getPowerStatus();
+            });
+            //initData();           
         }
+        public ICommand CheckPowerStatusCommand { get; set; }
+
+       
     }
 }

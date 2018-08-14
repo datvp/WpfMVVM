@@ -2,3 +2,4 @@
 packages
 zSpaceWinApp/bin/*
 zSpaceWinApp/obj/*
+*.suo

@@ -82,6 +82,7 @@
     <Compile Include="Processor\IState.cs" />
     <Compile Include="Processor\DownloadProcessor.cs" />
     <Compile Include="Processor\MainProcessor.cs" />
+    <Compile Include="Processor\PowerState.cs" />
     <Compile Include="UserControlCustom\ControlBarUC.xaml.cs">
       <DependentUpon>ControlBarUC.xaml</DependentUpon>
     </Compile>
