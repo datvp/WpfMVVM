@@ -8,6 +8,7 @@ using WindowsInstaller;
 using zSpaceWinApp.Processor;
 using zSpaceWinApp.Model;
 using zSpaceWinApp.Ultility;
+using System.Windows;
 
 namespace zSpaceWinApp.ViewModel
 {
@@ -18,6 +19,7 @@ namespace zSpaceWinApp.ViewModel
         private MainModel _MainModel = new MainModel();
         private InstallAppProcessor installProcessor = new InstallAppProcessor();
         private ObservableCollection<HardDriveModel> _hddCollection;
+              
 
         public ObservableCollection<HardDriveModel> hddCollection
         {
@@ -134,10 +136,19 @@ namespace zSpaceWinApp.ViewModel
             CheckInternetCommand = new RelayCommand<object>((p) => { return true; }, (p) => {
                 MainModel.IsConnectedInternet = Helper.IsNetworkAvailable();
             });
+            
+            EnglishCommand = new RelayCommand<FrameworkElement>((e) => { return true; }, (e) => {
+                LocUtil.SwitchLanguage(e, "en-US");
+            });
+            ChinaCommand = new RelayCommand<FrameworkElement>((e) => { return true; }, (e) => {
+                LocUtil.SwitchLanguage(e, "zh-CN");
+            });
             //initData();           
         }
         public ICommand CheckPowerStatusCommand { get; set; }
         public ICommand GetHDDInfoCommand { get; set; }
         public ICommand CheckInternetCommand { get; set; }
+        public ICommand EnglishCommand { get; set; }
+        public ICommand ChinaCommand { get; set; }
     }
 }

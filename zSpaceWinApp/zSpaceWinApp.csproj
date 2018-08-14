@@ -83,6 +83,7 @@
     <Compile Include="Processor\InstallAppProcessor.cs" />
     <Compile Include="Processor\IState.cs" />
     <Compile Include="Processor\DownloadProcessor.cs" />
+    <Compile Include="Processor\LocUtil.cs" />
     <Compile Include="Processor\MainProcessor.cs" />
     <Compile Include="Processor\PowerState.cs" />
     <Compile Include="Ultility\Helper.cs" />
@@ -104,6 +105,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Resources\MainResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Resources.en-US.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Resources.zh-CN.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

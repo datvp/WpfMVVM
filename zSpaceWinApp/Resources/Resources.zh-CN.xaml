@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="ResourceDictionaryName">zSpace-localization</sys:String>
+
+    <sys:String x:Key="ACLineStatus">交 流 線 路 狀 態:</sys:String>
+    <sys:String x:Key="BatteryFlag">電 池 標 誌:</sys:String>
+    <sys:String x:Key="BatteryLifePercent">電 池 壽 命 百 分 比:</sys:String>
+    <sys:String x:Key="BatteryLifeTime">電 池 續 航 時 間:</sys:String>
+    <sys:String x:Key="BatteryFullLifeTime">電 池 續 航 時 間:</sys:String>
+    
+</ResourceDictionary>
