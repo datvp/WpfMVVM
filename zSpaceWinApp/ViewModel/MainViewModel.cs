@@ -16,6 +16,14 @@ namespace zSpaceWinApp.ViewModel
         private ObservableCollection<Program> programList = new ObservableCollection<Program>();
         private MainModel _MainModel = new MainModel();
         private InstallAppProcessor installProcessor = new InstallAppProcessor();
+        private ObservableCollection<HardDriveModel> _hddCollection;
+
+        public ObservableCollection<HardDriveModel> hddCollection
+        {
+            get { return _hddCollection; }
+            set { _hddCollection = value; OnPropertyChanged(); }
+        }
+
         public ObservableCollection<Program> ProgramList
         {
             get { return programList; }
@@ -119,10 +127,13 @@ namespace zSpaceWinApp.ViewModel
             CheckPowerStatusCommand = new RelayCommand<object>((p) => { return true; }, (p) => {
                 MainModel = MainProcessor.getPowerStatus();
             });
+            GetHDDInfoCommand = new RelayCommand<object>((p) => { return true; }, (p) => {
+                hddCollection = MainProcessor.getHardDriveInfo();
+            });
             //initData();           
         }
         public ICommand CheckPowerStatusCommand { get; set; }
+        public ICommand GetHDDInfoCommand { get; set; }
 
-       
     }
 }

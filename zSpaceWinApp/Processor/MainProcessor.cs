@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,13 @@ namespace zSpaceWinApp.Processor
             MainModel.BatteryLifeTime = state.BatteryLifeTime;
             MainModel.BatteryFullLifeTime = state.BatteryFullLifeTime;
             return MainModel;
+        }
+
+        public static ObservableCollection<Model.HardDriveModel> getHardDriveInfo()
+        {
+            HardDriveInfo cls = new HardDriveInfo();
+            var result = cls.getHardDriveInfo();
+            return result;
         }
         //public void CheckPowerStatus()
         //{
