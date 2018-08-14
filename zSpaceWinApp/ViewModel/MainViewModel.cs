@@ -7,6 +7,7 @@ using System.Windows.Input;
 using WindowsInstaller;
 using zSpaceWinApp.Processor;
 using zSpaceWinApp.Model;
+using zSpaceWinApp.Ultility;
 
 namespace zSpaceWinApp.ViewModel
 {
@@ -130,10 +131,13 @@ namespace zSpaceWinApp.ViewModel
             GetHDDInfoCommand = new RelayCommand<object>((p) => { return true; }, (p) => {
                 hddCollection = MainProcessor.getHardDriveInfo();
             });
+            CheckInternetCommand = new RelayCommand<object>((p) => { return true; }, (p) => {
+                MainModel.IsConnectedInternet = Helper.IsNetworkAvailable();
+            });
             //initData();           
         }
         public ICommand CheckPowerStatusCommand { get; set; }
         public ICommand GetHDDInfoCommand { get; set; }
-
+        public ICommand CheckInternetCommand { get; set; }
     }
 }

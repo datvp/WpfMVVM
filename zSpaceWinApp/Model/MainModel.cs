@@ -97,5 +97,13 @@ namespace zSpaceWinApp.Model
             }
         }
 
+        private bool _IsConnectedInternet;
+
+        public bool IsConnectedInternet
+        {
+            get { return _IsConnectedInternet; }
+            set { _IsConnectedInternet = value; OnPropertyChanged(); }
+        }
+
     }
 }

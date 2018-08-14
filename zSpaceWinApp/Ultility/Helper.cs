@@ -25,5 +25,14 @@ namespace zSpaceWinApp.Ultility
             float.TryParse(strVal, out result);
             return result;
         }
+
+        [System.Runtime.InteropServices.DllImport("wininet.dll")]
+        private extern static bool InternetGetConnectedState(out int Description, int ReservedValue);
+
+        public static bool IsNetworkAvailable()
+        {
+            int desc;
+            return InternetGetConnectedState(out desc, 0);
+        }
     }
 }

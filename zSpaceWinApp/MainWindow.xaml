@@ -24,6 +24,7 @@
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <ListBox Grid.Row="0" Margin="2" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ItemsSource="{Binding ProgramList}">
@@ -129,6 +130,19 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <materialDesign:Card Grid.Row="0">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Content="Check Internet" Command="{Binding CheckInternetCommand}"></Button>
+            </materialDesign:Card>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <TextBlock Text="Internet available:" Margin="20 10 20 0" FontWeight="Bold"/>
+                <TextBlock Text="{Binding MainModel.IsConnectedInternet}" Margin="20 10 20 0"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>
