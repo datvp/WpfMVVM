@@ -143,7 +143,8 @@ namespace zSpaceWinApp.ViewModel
             ChinaCommand = new RelayCommand<FrameworkElement>((e) => { return true; }, (e) => {
                 LocUtil.SwitchLanguage(e, "zh-CN");
             });
-            //initData();           
+            //initData();     
+            Helper.GetAppsInstalledInSystem();
         }
         public ICommand CheckPowerStatusCommand { get; set; }
         public ICommand GetHDDInfoCommand { get; set; }

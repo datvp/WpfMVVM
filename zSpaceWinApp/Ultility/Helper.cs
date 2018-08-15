@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -54,7 +55,7 @@ namespace zSpaceWinApp.Ultility
         /// </summary>
         /// <param name="isStartWithWindow"></param>
         /// <param name="appName"></param>
-        private void SetStartup(bool isStartWithWindow, string appName)
+        public static void SetStartup(bool isStartWithWindow, string appName)
         {
             if (string.IsNullOrEmpty(appName)) return;
 
@@ -68,6 +69,34 @@ namespace zSpaceWinApp.Ultility
             }
 
             rk.DeleteValue(appName, false);
+        }
+
+        public static void GetAppsInstalledInSystem()
+        {
+            //var path = "SELECT Name,Version FROM Win32_Product";
+            //var path = "SELECT * FROM Win32_SystemDriver";
+            //var path = "SELECT * FROM Win32_PnPEntity";
+            var path = "SELECT DeviceName,DriverVersion FROM Win32_PnPSignedDriver where DeviceName <> NULL";
+
+            ManagementObjectSearcher mos = new ManagementObjectSearcher(path);
+            ManagementObjectCollection moc = mos.Get();
+            Console.WriteLine("moc count: " + moc.Count.ToString()); ;
+            Console.WriteLine("=============Start=============");
+            foreach (ManagementObject mo in moc)
+            {
+                try
+                {
+                    var appName = mo["DeviceName"].ToString();
+                    var version = mo["DriverVersion"].ToString();
+                    Console.WriteLine("AppName: " + appName + " | Version: " + version);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+            }
+            Console.WriteLine("=============End=============");
         }
     }
 }
