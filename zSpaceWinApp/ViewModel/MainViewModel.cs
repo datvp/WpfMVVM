@@ -1,21 +1,20 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows.Input;
-using WindowsInstaller;
 using zSpaceWinApp.Processor;
 using zSpaceWinApp.Model;
 using zSpaceWinApp.Ultility;
 using System.Windows;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace zSpaceWinApp.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
         private DownloadProcessor download = new DownloadProcessor();
-        private ObservableCollection<Program> programList = new ObservableCollection<Program>();
+        private static ObservableCollection<Program> programList = new ObservableCollection<Program>();
         private MainModel _MainModel = new MainModel();
         private InstallAppProcessor installProcessor = new InstallAppProcessor();
         private ObservableCollection<HardDriveModel> _hddCollection;
@@ -48,52 +47,28 @@ namespace zSpaceWinApp.ViewModel
 
         public void initData()
         {
-            // detect driver via registry
-            //string registry_key = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
-            //using (Microsoft.Win32.RegistryKey key = Registry.LocalMachine.OpenSubKey(registry_key))
-            //{
-            //    foreach (string subkey_name in key.GetSubKeyNames())
-            //    {
-            //        using (RegistryKey subkey = key.OpenSubKey(subkey_name))
-            //        {
-            //            if (subkey.GetValue("DisplayName") != null)
-            //            {
-            //                string name = subkey.GetValue("DisplayName").ToString();
-            //                var version = subkey.GetValue("Version") != null ? subkey.GetValue("Version").ToString() : "";
-            //                var versionDisplay = subkey.GetValue("VersionMajor") != null ? subkey.GetValue("VersionMajor").ToString() : "";
-            //                var versionMinor = subkey.GetValue("VersionMinor") != null ? subkey.GetValue("VersionMinor").ToString() : "";
-            //                string info = String.Format("version: '{0}' versionD: '{1}' versionM '{2}' Name '{3}'", version, versionDisplay, versionMinor, name);
-            //                Console.Out.WriteLine(info);
-            //                //programList.Add(new Model.Program(name, version));
-            //            }
-            //        }
-            //    }
-            //}
+            ShowProcess();
+        }
 
-            for (int i = 1; i <= 10; i++) {
-                Model.Program program = new Model.Program(String.Format("thread '{0}'", i), "");
-                program.Position = i;
-                program.Progress = 0;
-                program.TotalSize = i * 10;
-                program.ClickCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
-                {
-                    var programRunning = programList[(int)p - 1] as Model.Program;
-                    if(programRunning.Status == Model.Program.NORMAL)
-                    {
-                        programRunning.Status = Model.Program.DOWNLOADING;
-                        download.AddTask(programRunning);
-                        programRunning.ButtonText = "stop";
-                    } else
-                    {
-                        programRunning.IsPause = true;
-                        programRunning.Status = Model.Program.NORMAL;
-                        programRunning.ButtonText = "download";
-
-                    }                   
-                });               
-                programList.Add(program);
+        /**
+         * 
+         * 
+         */
+        private void doJob()
+        {
+            ObservableCollection<Program> temp = Helper.GetAppsInstalledInSystem();
+            foreach (Program p in temp)
+            {
+                //var uiContext = SynchronizationContext.Current;
+                //uiContext.Send(x => changeData(p), null);
+                App.Current.Dispatcher.Invoke(new Action(() => {
+                    changeData(p);
+                }));
+                App.Current.Dispatcher.Invoke(() => {
+                    changeData(p);
+                });
+                
             }
-
             IEnumerable<System.IO.FileInfo> files = installProcessor.queryInstallFiles();
             int test = programList.Count;
             foreach (System.IO.FileInfo field in files)
@@ -108,21 +83,29 @@ namespace zSpaceWinApp.ViewModel
                     var programRunning = programList[(int)p - 1] as Model.Program;
                     try
                     {
-                       // Call to install app.
+                        // Call to install app.
                         Console.Out.WriteLine("Installing...");
                         installProcessor.installApp(String.Format(@"D:\Files\{0}", program.ProgramName));
                         Console.Out.WriteLine("Completed");
                     }
                     catch (Exception e)
-                    {             
+                    {
                         Console.WriteLine("Install Exception: '{0}'", e.Message);
                     }
 
                 });
                 Console.WriteLine(field.Name);
-                programList.Add(program);
+                App.Current.Dispatcher.Invoke(new Action(() => {
+                    changeData(program);
+                }));
+                //programList.Add(program);
                 test++;
             }
+        }
+
+        private void changeData(Program p)
+        {           
+            programList.Add(p);
         }
 
         public MainViewModel()
@@ -143,13 +126,44 @@ namespace zSpaceWinApp.ViewModel
             ChinaCommand = new RelayCommand<FrameworkElement>((e) => { return true; }, (e) => {
                 LocUtil.SwitchLanguage(e, "zh-CN");
             });
-            //initData();     
-            Helper.GetAppsInstalledInSystem();
+            initData();     
+            //Helper.GetAppsInstalledInSystem();
         }
         public ICommand CheckPowerStatusCommand { get; set; }
         public ICommand GetHDDInfoCommand { get; set; }
         public ICommand CheckInternetCommand { get; set; }
         public ICommand EnglishCommand { get; set; }
         public ICommand ChinaCommand { get; set; }
-    }
+
+        private Thread thProcess;
+        public void ShowProcess()
+        {
+            try
+            {
+                thProcess = new Thread(doJob);
+                thProcess.Start();
+            }
+            catch (ThreadAbortException ex)
+            {
+                Thread.ResetAbort();
+            }
+            finally
+            {
+
+            }
+        }
+        public void HideProcess()
+        {
+            try
+            {
+                thProcess.Abort();
+            }
+            catch (ThreadAbortException ex)
+            {
+                Thread.ResetAbort();
+            }
+        }
+}
+
+
 }

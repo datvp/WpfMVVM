@@ -18,144 +18,152 @@
         DataContext="{StaticResource MainVM}"
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
-        Title="MainWindow" Height="437.5" Width="607.57">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-        </Grid.RowDefinitions>
+        Title="MainWindow" Height="498.5" Width="1068.57">
+    <Page Margin="20, 0, 0, 0" Width="auto">
+        <Grid ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        <ListBox Grid.Row="0" Margin="2" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ItemsSource="{Binding ProgramList}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ProgramName}" />
-                        <ProgressBar Grid.Row="0" Width="100"  Grid.Column="1" Minimum="0" Maximum="{Binding TotalSize}" Value="{Binding Progress}" />
-                        <TextBlock Width="100"  Grid.Column="2" Text="{Binding Progress}" Margin="10" />
-                        <Button Grid.Column="3" Style="{StaticResource MaterialDesignRaisedButton}"   Margin="10" 
-                            Width="100" Content="{Binding ButtonText}" Command="{Binding ClickCommand}" Tag="3" CommandParameter="{Binding Position}"></Button>
-
-                        <Button Grid.Column="4" Style="{StaticResource MaterialDesignRaisedButton}"   Margin="10" 
-                            Width="100" Content="Install" Command="{Binding InstallCommand}" Tag="3" CommandParameter="{Binding Position}"></Button>
-
-                    </Grid>                    
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>            
-            <materialDesign:Card Grid.Row="0">
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" Content="Check Power" Command="{Binding CheckPowerStatusCommand}"></Button>
-            </materialDesign:Card>
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <TextBlock Text="{DynamicResource ACLineStatus}" Margin="20 10 20 0" FontWeight="Bold"/>
-                <TextBlock Text="{Binding MainModel.ACLineStatus}" Margin="20 10 20 0"/>
-            </StackPanel>
-            <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <TextBlock Text="{DynamicResource BatteryFlag}" Margin="20 10 20 0" FontWeight="Bold"/>
-                <TextBlock Text="{Binding MainModel.BatteryFlag}" Margin="20 10 20 0" />
-            </StackPanel>
-            <StackPanel Grid.Row="3" Orientation="Horizontal">
-                <TextBlock Text="{DynamicResource BatteryLifePercent}" Margin="20 10 20 0" FontWeight="Bold"/>
-                <TextBlock Text="{Binding MainModel.BatteryLifePercent}" Margin="20 10 20 0"/>
-            </StackPanel>
-            <StackPanel Grid.Row="4" Orientation="Horizontal">
-                <TextBlock Text="{DynamicResource BatteryLifeTime}" Margin="20 10 20 0" FontWeight="Bold"/>
-                <TextBlock Text="{Binding MainModel.BatteryLifeTime}" Margin="20 10 20 0"/>
-            </StackPanel>
-            <StackPanel Grid.Row="5" Orientation="Horizontal">
-                <TextBlock Text="{DynamicResource BatteryFullLifeTime}" Margin="20 10 20 0" FontWeight="Bold"/>
-                <TextBlock Text="{Binding MainModel.BatteryFullLifeTime}" Margin="20 10 20 0"/>
-            </StackPanel>
-        </Grid>
-        <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <materialDesign:Card Grid.Row="0">
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" Content="Get HDD Info" Command="{Binding GetHDDInfoCommand}"></Button>
-            </materialDesign:Card>
-            <ListBox Grid.Row="1" Margin="2" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ItemsSource="{Binding hddCollection}">
+            <ListBox Grid.Row="0" Margin="2" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ItemsSource="{Binding ProgramList}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Driver Name:" Margin="20 10 20 0" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding DriverName}" Margin="0 10 0 0" FontWeight="Bold"/>
-                            </StackPanel>
-                            <ProgressBar Width="200" Height="10"  Minimum="0" Maximum="{Binding TotalSize}" Value="{Binding UsageSize}" Margin="0 10 0 0"/>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Total Size:" Margin="20 10 20 0" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding TotalSize}" Margin="20 10 20 0"/>
-                                <TextBlock Text="GB" Margin="0 10 0 0"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Total Free Space:" Margin="20 10 20 0" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding TotalFreeSpace}" Margin="20 10 20 0"/>
-                                <TextBlock Text="GB" Margin="0 10 0 0"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Available Free Space:" Margin="20 10 20 0" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding AvailableFreeSpace}" Margin="20 10 20 0"/>
-                                <TextBlock Text="GB" Margin="0 10 0 0"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Drive Format:" Margin="20 10 20 0" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding DriveFormat}" Margin="20 10 20 0"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Drive Type:" Margin="20 10 20 0" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding DriveType}" Margin="20 10 20 0"/>
-                            </StackPanel>
-                        </StackPanel>                                             
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="20"></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ProgramName}" />
+                            <ProgressBar Grid.Row="0" Width="100"  Grid.Column="1" Minimum="0" Maximum="{Binding TotalSize}" Value="{Binding Progress}" />
+                            <TextBlock Width="100"  Grid.Column="2" Text="{Binding Progress}" Margin="10" />
+                            <Button Grid.Column="3" Style="{StaticResource MaterialDesignRaisedButton}"   Margin="10" Visibility="Hidden"
+                            Width="100" Content="{Binding ButtonText}" Command="{Binding ClickCommand}" Tag="3" CommandParameter="{Binding Position}"></Button>
+                            <Button Grid.Column="4" Style="{StaticResource MaterialDesignRaisedButton}"   Margin="10" 
+                            Width="100" Content="Install" Command="{Binding InstallCommand}" Tag="3" CommandParameter="{Binding Position}"></Button>
+
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-        </Grid>
-        <Grid Grid.Row="3">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <materialDesign:Card Grid.Row="0">
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" Content="Check Internet" Command="{Binding CheckInternetCommand}"></Button>
-            </materialDesign:Card>
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <TextBlock Text="Internet available:" Margin="20 10 20 0" FontWeight="Bold"/>
-                <TextBlock Text="{Binding MainModel.IsConnectedInternet}" Margin="20 10 20 0"/>
-            </StackPanel>
-        </Grid>
-        <StackPanel Grid.Row="4" Orientation="Horizontal">
-            <materialDesign:Card>
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" Content="English"
+            <Grid Grid.Column="2" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <materialDesign:Card Grid.Row="0">
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}" Content="Check Power" Command="{Binding CheckPowerStatusCommand}"></Button>
+                    </materialDesign:Card>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <TextBlock Text="{DynamicResource ACLineStatus}" Margin="20 10 20 0" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding MainModel.ACLineStatus}" Margin="20 10 20 0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <TextBlock Text="{DynamicResource BatteryFlag}" Margin="20 10 20 0" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding MainModel.BatteryFlag}" Margin="20 10 20 0" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="3" Orientation="Horizontal">
+                        <TextBlock Text="{DynamicResource BatteryLifePercent}" Margin="20 10 20 0" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding MainModel.BatteryLifePercent}" Margin="20 10 20 0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="4" Orientation="Horizontal">
+                        <TextBlock Text="{DynamicResource BatteryLifeTime}" Margin="20 10 20 0" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding MainModel.BatteryLifeTime}" Margin="20 10 20 0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="5" Orientation="Horizontal">
+                        <TextBlock Text="{DynamicResource BatteryFullLifeTime}" Margin="20 10 20 0" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding MainModel.BatteryFullLifeTime}" Margin="20 10 20 0"/>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <materialDesign:Card Grid.Row="0">
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}" Content="Get HDD Info" Command="{Binding GetHDDInfoCommand}"></Button>
+                    </materialDesign:Card>
+                    <ListBox Grid.Row="1" Margin="2" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ItemsSource="{Binding hddCollection}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Driver Name:" Margin="20 10 20 0" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding DriverName}" Margin="0 10 0 0" FontWeight="Bold"/>
+                                    </StackPanel>
+                                    <ProgressBar Width="200" Height="10"  Minimum="0" Maximum="{Binding TotalSize}" Value="{Binding UsageSize}" Margin="0 10 0 0"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Total Size:" Margin="20 10 20 0" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding TotalSize}" Margin="20 10 20 0"/>
+                                        <TextBlock Text="GB" Margin="0 10 0 0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Total Free Space:" Margin="20 10 20 0" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding TotalFreeSpace}" Margin="20 10 20 0"/>
+                                        <TextBlock Text="GB" Margin="0 10 0 0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Available Free Space:" Margin="20 10 20 0" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding AvailableFreeSpace}" Margin="20 10 20 0"/>
+                                        <TextBlock Text="GB" Margin="0 10 0 0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Drive Format:" Margin="20 10 20 0" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding DriveFormat}" Margin="20 10 20 0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Drive Type:" Margin="20 10 20 0" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding DriveType}" Margin="20 10 20 0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <materialDesign:Card Grid.Row="0">
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}" Content="Check Internet" Command="{Binding CheckInternetCommand}"></Button>
+                    </materialDesign:Card>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <TextBlock Text="Internet available:" Margin="20 10 20 0" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding MainModel.IsConnectedInternet}" Margin="20 10 20 0"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Grid.Row="3" Orientation="Horizontal">
+                    <materialDesign:Card>
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}" Content="English"
                         Command="{Binding EnglishCommand}"
                         CommandParameter="{Binding ElementName=main}"></Button>
-            </materialDesign:Card>
-            <materialDesign:Card>
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" Content="China"
+                    </materialDesign:Card>
+                    <materialDesign:Card>
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}" Content="China"
                         Command="{Binding ChinaCommand}"
                         CommandParameter="{Binding ElementName=main}"></Button>
-            </materialDesign:Card>
-        </StackPanel>
-    </Grid>
+                    </materialDesign:Card>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Page>
 </Window>

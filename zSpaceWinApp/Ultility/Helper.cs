@@ -1,13 +1,12 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Reflection;
+using zSpaceWinApp.Model;
 
 namespace zSpaceWinApp.Ultility
 {
@@ -71,32 +70,89 @@ namespace zSpaceWinApp.Ultility
             rk.DeleteValue(appName, false);
         }
 
-        public static void GetAppsInstalledInSystem()
+        public static ObservableCollection<Program> GetAppsInstalledInSystem()
         {
-            //var path = "SELECT Name,Version FROM Win32_Product";
-            //var path = "SELECT * FROM Win32_SystemDriver";
-            //var path = "SELECT * FROM Win32_PnPEntity";
-            var path = "SELECT DeviceName,DriverVersion FROM Win32_PnPSignedDriver where DeviceName <> NULL";
-
-            ManagementObjectSearcher mos = new ManagementObjectSearcher(path);
-            ManagementObjectCollection moc = mos.Get();
-            Console.WriteLine("moc count: " + moc.Count.ToString()); ;
-            Console.WriteLine("=============Start=============");
-            foreach (ManagementObject mo in moc)
+            ObservableCollection<Program> p = new ObservableCollection<Program>();
+            callConnect();
+            try
             {
-                try
+                //var path = "SELECT Name,Version FROM Win32_Product";
+                //var path = "SELECT * FROM Win32_SystemDriver";
+                //var path = "SELECT * FROM Win32_PnPEntity";
+                ConnectionOptions options = new ConnectionOptions();
+                //options.Username = 
+                //options.Password =
+                //options.Authority = 
+                //options.EnablePrivileges = 
+
+                string providerPath = @"root\CIMv2";
+                var path = "SELECT DeviceName, DriverVersion FROM Win32_PnPSignedDriver where DeviceName <> NULL";
+                ManagementScope scope = new ManagementScope(providerPath, options);
+                scope.Connect();
+
+                ObjectQuery query = new ObjectQuery(path);
+                var mos = new ManagementObjectSearcher(scope, query);
+                ManagementObjectCollection moc = mos.Get();
+                Console.WriteLine("moc count: " + moc.Count.ToString()); ;
+                Console.WriteLine("=============Start=============");
+                System.Collections.Generic.HashSet<String> strings = new System.Collections.Generic.HashSet<string>();
+                foreach (ManagementObject mo in moc)
                 {
-                    var appName = mo["DeviceName"].ToString();
-                    var version = mo["DriverVersion"].ToString();
-                    Console.WriteLine("AppName: " + appName + " | Version: " + version);
+                    try
+                    {                        
+                        var appName = mo["DeviceName"].ToString();
+                        var version = mo["DriverVersion"].ToString();
+                        if (strings.Contains(appName)) continue;
+                        strings.Add(appName);
+                        Program program = new Program(appName, version);
+                        p.Add(program);
+                        Console.WriteLine("AppName: " + appName + " | Version: " + version);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);                     
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
-                }
+                Console.WriteLine("=============End=============");
             }
-            Console.WriteLine("=============End=============");
+            catch (Exception e)
+            {
+                Console.WriteLine("WMI exception: " + e.Message);
+            }
+            return p;
+        }
+        private static void callConnect()
+        {
+            Console.WriteLine("Start");
+            var processName = Assembly.GetEntryAssembly().GetName().Name;
+            Console.WriteLine($"Process Name: {processName}");
+            var directory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            Console.WriteLine($"Directory Name: {directory}");
+            var parentProcessFullPath = GetParentProcess().MainModule.FileName;
+            Console.WriteLine(parentProcessFullPath);
+            Console.WriteLine("End");
+        }
+
+        internal static Process GetParentProcess()
+        {
+            Console.WriteLine($"Enter GetParentProcess");
+            int Id = Process.GetCurrentProcess().Id;
+            Console.WriteLine($"Current ProcessId {Id}");
+            try
+            {
+                using (ManagementObject mo = new ManagementObject("win32_process.handle='" + Id + "'"))
+                {
+                    mo.Get();
+                    int parentPid = Convert.ToInt32(mo["ParentProcessId"]);                    
+                    return Process.GetProcessById(parentPid);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Message {ex.Message} Exception {ex.StackTrace}");
+                return null;
+            }
         }
     }
 }
