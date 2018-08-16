@@ -46,6 +46,7 @@ namespace zSpaceWinApp.Logs
             ObservableCollection<Model.Errors> collection = new ObservableCollection<Model.Errors>();
             string query = "Select * from Errors";
             var dt = DAL.GetList(query);
+            if (dt == null) return collection;
             foreach (DataRow r in dt.Rows)
             {
                 Model.Errors m = new Model.Errors();

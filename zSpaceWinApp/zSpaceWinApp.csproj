@@ -104,7 +104,6 @@
     </Compile>
     <Compile Include="Logs\DAL.cs" />
     <Compile Include="Logs\Log.cs" />
-    <Compile Include="Logs\SQliteDatabaseContext.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\Downloads.cs" />
     <Compile Include="Model\Errors.cs" />
