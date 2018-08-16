@@ -8,6 +8,7 @@ using zSpaceWinApp.Ultility;
 using System.Windows;
 using System.Threading;
 using System.Windows.Threading;
+using zSpaceWinApp.Logs;
 
 namespace zSpaceWinApp.ViewModel
 {
@@ -128,7 +129,9 @@ namespace zSpaceWinApp.ViewModel
                 AboutWindow aw = new AboutWindow();
                 aw.ShowDialog();
             });
-            initData();     
+            //Log.Error("Test2", "Test2");
+            var lst = Log.GetListErrors();
+            //initData();     
             //Helper.GetAppsInstalledInSystem();
         }
         public ICommand CheckPowerStatusCommand { get; set; }
