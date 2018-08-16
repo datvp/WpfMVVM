@@ -1,0 +1,25 @@
+﻿<Window x:Class="zSpaceWinApp.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:zSpaceWinApp"
+        mc:Ignorable="d"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        
+        Name="aboutWindow"
+        DataContext="{StaticResource MainVM}"
+        WindowStartupLocation="CenterScreen"
+        Title="AboutWindow" Height="300" Width="300">
+    <Grid>
+        <TextBlock Text="{DynamicResource ACLineStatus}" Margin="20 10 20 0" FontWeight="Bold"/>
+    </Grid>
+</Window>

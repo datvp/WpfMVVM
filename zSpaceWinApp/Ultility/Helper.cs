@@ -154,5 +154,13 @@ namespace zSpaceWinApp.Ultility
                 return null;
             }
         }
+        /// <summary>
+        /// get current culture of machine
+        /// </summary>
+        /// <returns></returns>
+        public static string GetMachineCurrentCulture()
+        {
+            return System.Globalization.CultureInfo.CurrentCulture.Name;
+        }
     }
 }

@@ -76,6 +76,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\HardDriveModel.cs" />
     <Compile Include="Model\MainModel.cs" />
@@ -88,11 +91,16 @@
     <Compile Include="Processor\MainProcessor.cs" />
     <Compile Include="Processor\PowerState.cs" />
     <Compile Include="Ultility\Helper.cs" />
+    <Compile Include="Ultility\RegionAndLanguageHelper.cs" />
     <Compile Include="UserControlCustom\ControlBarUC.xaml.cs">
       <DependentUpon>ControlBarUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Page Include="AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

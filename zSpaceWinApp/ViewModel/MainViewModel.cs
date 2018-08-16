@@ -121,10 +121,12 @@ namespace zSpaceWinApp.ViewModel
             });
             
             EnglishCommand = new RelayCommand<FrameworkElement>((e) => { return true; }, (e) => {
-                LocUtil.SwitchLanguage(e, "en-US");
+                LocUtil.SwitchLanguage(e, "en-US");             
             });
             ChinaCommand = new RelayCommand<FrameworkElement>((e) => { return true; }, (e) => {
                 LocUtil.SwitchLanguage(e, "zh-CN");
+                AboutWindow aw = new AboutWindow();
+                aw.ShowDialog();
             });
             initData();     
             //Helper.GetAppsInstalledInSystem();
