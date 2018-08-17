@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -86,7 +87,7 @@ namespace zSpaceWinApp.Ultility
                 //options.EnablePrivileges = 
 
                 string providerPath = @"root\CIMv2";
-                var path = "SELECT DeviceName, DriverVersion FROM Win32_PnPSignedDriver where DeviceName <> NULL";
+                var path = "SELECT ClassGuid,FriendlyName,DriverVersion FROM Win32_PnPSignedDriver where FriendlyName <> NULL";
                 ManagementScope scope = new ManagementScope(providerPath, options);
                 scope.Connect();
 
@@ -95,18 +96,23 @@ namespace zSpaceWinApp.Ultility
                 ManagementObjectCollection moc = mos.Get();
                 Console.WriteLine("moc count: " + moc.Count.ToString()); ;
                 Console.WriteLine("=============Start=============");
-                System.Collections.Generic.HashSet<String> strings = new System.Collections.Generic.HashSet<string>();
+                var arrApp = new HashSet<string>();
                 foreach (ManagementObject mo in moc)
                 {
                     try
-                    {                        
-                        var appName = mo["DeviceName"].ToString();
+                    {
+                        var guid = mo["ClassGuid"].ToString();
+                        var driverName = mo["FriendlyName"].ToString();
                         var version = mo["DriverVersion"].ToString();
-                        if (strings.Contains(appName)) continue;
-                        strings.Add(appName);
-                        Program program = new Program(appName, version);
+
+                        if (arrApp.Contains(driverName)) continue;
+
+                        arrApp.Add(driverName);
+
+                        Program program = new Program(driverName, version);
                         p.Add(program);
-                        Console.WriteLine("AppName: " + appName + " | Version: " + version);
+
+                        Console.WriteLine("Driver Name: " + driverName + " | Version: " + version + " | GUID: " + guid);
                     }
                     catch (Exception ex)
                     {
@@ -126,10 +132,13 @@ namespace zSpaceWinApp.Ultility
             Console.WriteLine("Start");
             var processName = Assembly.GetEntryAssembly().GetName().Name;
             Console.WriteLine($"Process Name: {processName}");
+
             var directory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             Console.WriteLine($"Directory Name: {directory}");
+
             var parentProcessFullPath = GetParentProcess().MainModule.FileName;
             Console.WriteLine(parentProcessFullPath);
+
             Console.WriteLine("End");
         }
 

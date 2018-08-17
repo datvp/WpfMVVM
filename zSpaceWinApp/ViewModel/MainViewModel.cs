@@ -17,7 +17,7 @@ namespace zSpaceWinApp.ViewModel
         private DownloadProcessor download = new DownloadProcessor();
         private static ObservableCollection<Program> programList = new ObservableCollection<Program>();
         private MainModel _MainModel = new MainModel();
-        private InstallAppProcessor installProcessor = new InstallAppProcessor();
+        private InstallUnInstallProcessor iup = new InstallUnInstallProcessor();
         private ObservableCollection<HardDriveModel> _hddCollection;
               
 
@@ -64,13 +64,9 @@ namespace zSpaceWinApp.ViewModel
                 //uiContext.Send(x => changeData(p), null);
                 App.Current.Dispatcher.Invoke(new Action(() => {
                     changeData(p);
-                }));
-                App.Current.Dispatcher.Invoke(() => {
-                    changeData(p);
-                });
-                
+                }));                               
             }
-            IEnumerable<System.IO.FileInfo> files = installProcessor.queryInstallFiles();
+            IEnumerable<System.IO.FileInfo> files = iup.queryInstallFiles();
             int test = programList.Count;
             foreach (System.IO.FileInfo field in files)
             {
@@ -86,7 +82,7 @@ namespace zSpaceWinApp.ViewModel
                     {
                         // Call to install app.
                         Console.Out.WriteLine("Installing...");
-                        installProcessor.installApp(String.Format(@"D:\Files\{0}", program.ProgramName));
+                        iup.Install(String.Format(@"D:\Files\{0}", program.ProgramName));
                         Console.Out.WriteLine("Completed");
                     }
                     catch (Exception e)
@@ -126,13 +122,13 @@ namespace zSpaceWinApp.ViewModel
             });
             ChinaCommand = new RelayCommand<FrameworkElement>((e) => { return true; }, (e) => {
                 LocUtil.SwitchLanguage(e, "zh-CN");
-                AboutWindow aw = new AboutWindow();
-                aw.ShowDialog();
+                //AboutWindow aw = new AboutWindow();
+                //aw.ShowDialog();
             });
             //Log.Error("Test2", "Test2");
-            var lst = Log.GetListErrors();
-            //initData();     
-            //Helper.GetAppsInstalledInSystem();
+            //var lst = Log.GetListErrors();
+            initData();
+            //iup.UnInstall("{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}");
         }
         public ICommand CheckPowerStatusCommand { get; set; }
         public ICommand GetHDDInfoCommand { get; set; }
@@ -148,14 +144,10 @@ namespace zSpaceWinApp.ViewModel
                 thProcess = new Thread(doJob);
                 thProcess.Start();
             }
-            catch (ThreadAbortException ex)
+            catch (ThreadAbortException)
             {
                 Thread.ResetAbort();
-            }
-            finally
-            {
-
-            }
+            }           
         }
         public void HideProcess()
         {
@@ -163,7 +155,7 @@ namespace zSpaceWinApp.ViewModel
             {
                 thProcess.Abort();
             }
-            catch (ThreadAbortException ex)
+            catch (ThreadAbortException)
             {
                 Thread.ResetAbort();
             }

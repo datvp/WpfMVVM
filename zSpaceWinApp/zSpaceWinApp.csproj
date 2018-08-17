@@ -111,7 +111,7 @@
     <Compile Include="Model\MainModel.cs" />
     <Compile Include="Model\Program.cs" />
     <Compile Include="Processor\HardDriveInfo.cs" />
-    <Compile Include="Processor\InstallAppProcessor.cs" />
+    <Compile Include="Processor\InstallUnInstallProcessor.cs" />
     <Compile Include="Processor\IState.cs" />
     <Compile Include="Processor\DownloadProcessor.cs" />
     <Compile Include="Processor\LocUtil.cs" />
