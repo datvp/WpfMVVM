@@ -9,6 +9,7 @@ using System.Windows;
 using System.Threading;
 using System.Windows.Threading;
 using zSpaceWinApp.Logs;
+using System.Linq;
 
 namespace zSpaceWinApp.ViewModel
 {
@@ -66,28 +67,30 @@ namespace zSpaceWinApp.ViewModel
             //        changeData(p);
             //    }));                               
             //}
+            var lstDownHis = Log.GetListDownHis();
             IEnumerable<System.IO.FileInfo> files = iup.queryInstallFiles();
             int test = 1;
             foreach (System.IO.FileInfo field in files)
             {
+                var found = lstDownHis.Where(o => o.DriverName == field.Name).FirstOrDefault();
                 Model.Program program = new Model.Program(field.Name, "");
                 program.Position = test;
-                program.Progress = 0;
-                program.TotalSize = test * 10;
-                program.Status = Program.DOWNLOADING;
+                program.Progress = found != null ? found.Progress : 0;
+                program.TotalSize = found != null ? found.TotalSize : 1000;
+                program.Status = found != null ? int.Parse(found.Status) : Program.DOWNLOADING;
                 program.ClickCommand = new RelayCommand<object>(p => { return true; }, p => {
                     var item = programList[(int)p - 1] as Model.Program;
                     if (item.ButtonText == "download")
                     {
                         item.Status = Program.DOWNLOADING;
                         item.ButtonText = "pause";
-                        download.AddTask(item);
                     }
                     else if (item.ButtonText == "pause")
                     {
                         item.Status = Program.PAUSE;
                         item.ButtonText = "download";
                     }
+                    download.AddTask(item);
                 });
                 program.InstallCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
                 {

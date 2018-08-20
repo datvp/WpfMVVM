@@ -12,13 +12,29 @@ namespace zSpaceWinApp.Logs
 {
     public class Log
     {
-        public static void Info(Model.Downloads m)
+        private static bool CheckExist(string tableName, string colName, string colVal)
         {
-            var query = "INSERT INTO Downloads(DeviceId,PackageId,DownloadedOn)VALUES(@DeviceId,@PackageId,@DownloadedOn)";
+            var query = $"SELECT {colName} FROM {tableName} WHERE {colName}=@colVal LIMIT 1";
             List<SQLiteParameter> param = new List<SQLiteParameter>();
-            param.Add(new SQLiteParameter("@DeviceId", m.DeviceId));
-            param.Add(new SQLiteParameter("@PackageId", m.PackageId));
-            param.Add(new SQLiteParameter("@DownloadedOn", m.DownloadedOn));
+            param.Add(new SQLiteParameter("@colVal", colVal));
+
+            var dt = DAL.GetList(query, param);
+            return dt != null && dt.Rows.Count > 0;
+        }
+        public static void Info(Model.DownHis m)
+        {            
+            var query = "INSERT INTO DownHis(DriverName,TotalSize,Progress,Status,CreatedOn)VALUES(@DriverName,@TotalSize,@Progress,@Status,@CreatedOn)";
+            var found = CheckExist("DownHis", "DriverName", m.DriverName);
+            if (found)
+            {
+                query = "UPDATE DownHis SET TotalSize=@TotalSize,Progress=@Progress,Status=@Status,CreatedOn=@CreatedOn WHERE DriverName=@DriverName";
+            }
+            List<SQLiteParameter> param = new List<SQLiteParameter>();
+            param.Add(new SQLiteParameter("@DriverName", m.DriverName));
+            param.Add(new SQLiteParameter("@TotalSize", m.TotalSize));
+            param.Add(new SQLiteParameter("@Progress", m.Progress));
+            param.Add(new SQLiteParameter("@Status", m.Status));
+            param.Add(new SQLiteParameter("@CreatedOn", DateTime.Now.ToString("yyyy-MM-dd HH:MM tt")));
             DAL.ExecQuery(query, param);
         }
 
@@ -45,7 +61,7 @@ namespace zSpaceWinApp.Logs
         {
             ObservableCollection<Model.Errors> collection = new ObservableCollection<Model.Errors>();
             string query = "Select * from Errors";
-            var dt = DAL.GetList(query);
+            var dt = DAL.GetList(query, null);
             if (dt == null) return collection;
             foreach (DataRow r in dt.Rows)
             {
@@ -57,6 +73,24 @@ namespace zSpaceWinApp.Logs
                 collection.Add(m);
             }
             return collection;
-        }        
+        }
+
+        public static ObservableCollection<Model.DownHis> GetListDownHis()
+        {
+            ObservableCollection<Model.DownHis> collection = new ObservableCollection<Model.DownHis>();
+            string query = "Select * from DownHis";
+            var dt = DAL.GetList(query, null);
+            if (dt == null) return collection;
+            foreach (DataRow r in dt.Rows)
+            {
+                Model.DownHis m = new Model.DownHis();
+                m.DriverName = r["DriverName"].ToString();
+                m.TotalSize = int.Parse(r["TotalSize"].ToString());
+                m.Progress = int.Parse(r["Progress"].ToString());
+                m.Status = r["Status"].ToString();
+                collection.Add(m);
+            }
+            return collection;
+        }
     }
 }

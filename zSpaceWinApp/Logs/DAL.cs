@@ -43,7 +43,7 @@ namespace zSpaceWinApp.Logs
             }           
         }
 
-        public static DataTable GetList(string query)
+        public static DataTable GetList(string query, List<SQLiteParameter> param)
         {
             DataTable dt = new DataTable();
             using (var connect = new SQLiteConnection(ConnectionString))
@@ -55,6 +55,13 @@ namespace zSpaceWinApp.Logs
                     {
                         cmd.CommandText = query;
                         cmd.CommandType = CommandType.Text;
+                        if (param != null)
+                        {
+                            foreach (var p in param)
+                            {
+                                cmd.Parameters.Add(p);
+                            }
+                        }
                         using (SQLiteDataReader rdr = cmd.ExecuteReader())
                         {
                             dt.Load(rdr);

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Management.Automation;
 using System.Threading;
+using zSpaceWinApp.Logs;
 
 namespace zSpaceWinApp.Processor
 {
@@ -52,18 +53,29 @@ namespace zSpaceWinApp.Processor
 
             if (threadDownloading == null) return;
 
-            int count = 0;
-            while (count < threadDownloading.program.Position * 100)
+            int count = threadDownloading.program.Progress;
+           
+            while (count < threadDownloading.program.TotalSize)
             {
                 if (threadDownloading.program.Status == Model.Program.STOP)
                 {
+                    threadDownloading.program.Progress = 0;
                     threadDownloading.CancelAsync();
                     Console.WriteLine($"Canceled: '{threadDownloading.program.Position}' thread: '{count}'");
                     break;
                 }
                 else if (threadDownloading.program.Status == Model.Program.PAUSE)
                 {
-                    continue;
+                    // write log
+                    Log.Info(new Model.DownHis() {
+                        DriverName = threadDownloading.program.ProgramName,
+                        TotalSize = (int)threadDownloading.program.TotalSize,
+                        Progress = threadDownloading.program.Progress,
+                        Status = threadDownloading.program.Status.ToString(),
+                    });
+                    //cancel thread
+                    threadDownloading.CancelAsync();
+                    break;
                 }
                 Console.WriteLine($"Processing: '{threadDownloading.program.Position}' thread: '{count}'");
                 threadDownloading.ReportProgress(count);
