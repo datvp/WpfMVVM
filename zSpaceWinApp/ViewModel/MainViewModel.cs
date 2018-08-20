@@ -57,23 +57,38 @@ namespace zSpaceWinApp.ViewModel
          */
         private void doJob()
         {
-            ObservableCollection<Program> temp = Helper.GetAppsInstalledInSystem();
-            foreach (Program p in temp)
-            {
-                //var uiContext = SynchronizationContext.Current;
-                //uiContext.Send(x => changeData(p), null);
-                App.Current.Dispatcher.Invoke(new Action(() => {
-                    changeData(p);
-                }));                               
-            }
+            //ObservableCollection<Program> temp = Helper.GetAppsInstalledInSystem();
+            //foreach (Program p in temp)
+            //{
+            //    //var uiContext = SynchronizationContext.Current;
+            //    //uiContext.Send(x => changeData(p), null);
+            //    App.Current.Dispatcher.Invoke(new Action(() => {
+            //        changeData(p);
+            //    }));                               
+            //}
             IEnumerable<System.IO.FileInfo> files = iup.queryInstallFiles();
-            int test = programList.Count;
+            int test = 1;
             foreach (System.IO.FileInfo field in files)
             {
                 Model.Program program = new Model.Program(field.Name, "");
                 program.Position = test;
                 program.Progress = 0;
                 program.TotalSize = test * 10;
+                program.Status = Program.DOWNLOADING;
+                program.ClickCommand = new RelayCommand<object>(p => { return true; }, p => {
+                    var item = programList[(int)p - 1] as Model.Program;
+                    if (item.ButtonText == "download")
+                    {
+                        item.Status = Program.DOWNLOADING;
+                        item.ButtonText = "pause";
+                        download.AddTask(item);
+                    }
+                    else if (item.ButtonText == "pause")
+                    {
+                        item.Status = Program.PAUSE;
+                        item.ButtonText = "download";
+                    }
+                });
                 program.InstallCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
                 {
                     Console.Out.WriteLine("InstallCommand called");

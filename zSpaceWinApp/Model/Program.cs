@@ -9,9 +9,10 @@ namespace zSpaceWinApp.Model
 {
     public class Program : BaseModel
     {
-        public const int NORMAL = 1;
+        public const int STOP = 1;
         public const int DOWNLOADING = 2;
         public const int INSTALL_EXISTED = 3;       
+        public const int PAUSE = 4;
 
         private int position;
         private string v1;
@@ -19,7 +20,7 @@ namespace zSpaceWinApp.Model
         private long totalSize;
         private int progress;
         private string buttonText = "download";
-        private int status = NORMAL;
+        private int status = DOWNLOADING;
         private bool _isPause = false;
 
         public Program(string v1, string v2)

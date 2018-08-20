@@ -19,19 +19,18 @@ namespace zSpaceWinApp.Processor
 
         public void AddTask(Model.Program program)
         {
-            if (!set.Contains(program.ProgramName))
-            {
-                set.Add(program.ProgramName);
-                this.StartThread(program);
-            }
+            if (set.Contains(program.ProgramName)) return;
+
+            set.Add(program.ProgramName);
+            this.StartThread(program);
         }
 
         private void StartThread(Model.Program program)
         {
             DownloadBW thread = new DownloadBW(program);
-            thread.DoWork += new DoWorkEventHandler(doWork);
             thread.WorkerReportsProgress = true;
             thread.WorkerSupportsCancellation = true;            
+            thread.DoWork += new DoWorkEventHandler(doWork);
             thread.RunWorkerCompleted += new RunWorkerCompletedEventHandler(completeWork);
             thread.ProgressChanged += new ProgressChangedEventHandler(progressChanged);
             
@@ -40,50 +39,47 @@ namespace zSpaceWinApp.Processor
 
         private void progressChanged(object sender, ProgressChangedEventArgs e)
         {
-            DownloadBW threat = (DownloadBW)sender;
-            if (threat != null)
-            {
-                //Console.Out.WriteLine(String.Format("progressChanged: '{0}'", threat.program.Position));
-                if (threat.program != null)
-                {
-                    threat.program.Progress = e.ProgressPercentage;                 
-                }
-            }
+            DownloadBW threadDownloading = sender as DownloadBW;
+
+            if (threadDownloading == null || threadDownloading.program == null) return;
+
+            threadDownloading.program.Progress = e.ProgressPercentage;
         }
 
         private void doWork(object sender, DoWorkEventArgs e)
         {
-            DownloadBW threat = (DownloadBW) sender;
-            
-            if(threat != null)
-            {
-                //installApp(@"D:\Softs\Snoop.msi");
-                int count = 0;
-                while (count < threat.program.Position * 100)
-                {
-                    if (threat.program.Status != Model.Program.DOWNLOADING)
-                    {
-                        threat.CancelAsync();
-                        Console.Out.WriteLine(String.Format("cancel: '{0}' progress: '{1}'", threat.program.Position, count));
-                        break;
-                    }
-                    Console.Out.WriteLine(String.Format("process: '{0}' progress: '{1}'", threat.program.Position, count));
-                    Thread.Sleep(1);
-                    threat.ReportProgress(count);
-                    count++;
-                }
-            }
+            DownloadBW threadDownloading = sender as DownloadBW;
 
+            if (threadDownloading == null) return;
+
+            int count = 0;
+            while (count < threadDownloading.program.Position * 100)
+            {
+                if (threadDownloading.program.Status == Model.Program.STOP)
+                {
+                    threadDownloading.CancelAsync();
+                    Console.WriteLine($"Canceled: '{threadDownloading.program.Position}' thread: '{count}'");
+                    break;
+                }
+                else if (threadDownloading.program.Status == Model.Program.PAUSE)
+                {
+                    continue;
+                }
+                Console.WriteLine($"Processing: '{threadDownloading.program.Position}' thread: '{count}'");
+                threadDownloading.ReportProgress(count);
+                count++;
+                Thread.Sleep(1);
+            }
         }
 
         private void completeWork(object sender, RunWorkerCompletedEventArgs e)
         {
-            DownloadBW threat = (DownloadBW)sender;
-            if(threat != null)
-            {
-                Console.Out.WriteLine(String.Format("complete: '{0}'", threat.program.Position));
-                set.Remove(threat.program.ProgramName);
-            }
+            DownloadBW threadDownloading = sender as DownloadBW;
+
+            if (threadDownloading == null) return;
+            threadDownloading.program.ButtonText = "download";
+            Console.WriteLine($"Completed: {threadDownloading.program.Position}");
+            set.Remove(threadDownloading.program.ProgramName);
         }
     }
 
