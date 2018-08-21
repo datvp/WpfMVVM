@@ -21,8 +21,11 @@ namespace zSpaceWinApp
         
         private void ShowSystemTray()
         {
+            string directory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            var fullPath = System.IO.Path.Combine(directory, "light.ico");
+            var found = System.IO.File.Exists(fullPath);
             ni = new NotifyIcon();
-            ni.Icon = new System.Drawing.Icon("light.ico");
+            ni.Icon = found ? new System.Drawing.Icon("light.ico") : new System.Drawing.Icon(System.Drawing.SystemIcons.Application, 50, 50);
             ni.Visible = true;
             ni.Text = "zSpace Manager";
             ni.DoubleClick += Ni_DoubleClick;
