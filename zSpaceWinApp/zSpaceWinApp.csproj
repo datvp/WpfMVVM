@@ -155,6 +155,7 @@
     <Compile Include="Processor\LocUtil.cs" />
     <Compile Include="Processor\MainProcessor.cs" />
     <Compile Include="Processor\PowerState.cs" />
+    <Compile Include="Ultility\Extensions.cs" />
     <Compile Include="Ultility\Helper.cs" />
     <Compile Include="Ultility\RegionAndLanguageHelper.cs" />
     <Compile Include="UserControlCustom\ControlBarUC.xaml.cs">
