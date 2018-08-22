@@ -8,20 +8,24 @@ using zSpaceWinApp.Ultility;
 using System.Windows;
 using System.Threading;
 using System.Windows.Threading;
-using zSpaceWinApp.Logs;
 using System.Linq;
+using zSpaceWinApp.Logs;
+using zSpace.Notification.Services;
+using zSpace.Notification.Model;
+using zSpace.Notification.Core.Configuration;
 
 namespace zSpaceWinApp.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
+        public INotificationDialogService notify { get; set; }
         private DownloadProcessor download = new DownloadProcessor();
         private static ObservableCollection<Program> programList = new ObservableCollection<Program>();
         private MainModel _MainModel = new MainModel();
         private InstallUnInstallProcessor iup = new InstallUnInstallProcessor();
         private ObservableCollection<HardDriveModel> _hddCollection;
-              
-
+        private ILog log { get; set; }
+        
         public ObservableCollection<HardDriveModel> hddCollection
         {
             get { return _hddCollection; }
@@ -67,7 +71,8 @@ namespace zSpaceWinApp.ViewModel
             //        changeData(p);
             //    }));                               
             //}
-            var lstDownHis = Log.GetListDownHis();
+            
+            var lstDownHis = log.GetListDownHis();
             IEnumerable<System.IO.FileInfo> files = iup.queryInstallFiles();
             int test = 1;
             foreach (System.IO.FileInfo field in files)
@@ -125,6 +130,9 @@ namespace zSpaceWinApp.ViewModel
 
         public MainViewModel()
         {
+            notify = new NotificationDialogService();
+            log = new Log();
+
             CheckPowerStatusCommand = new RelayCommand<object>((p) => { return true; }, (p) => {
                 MainModel = MainProcessor.getPowerStatus();
             });
@@ -142,6 +150,14 @@ namespace zSpaceWinApp.ViewModel
                 LocUtil.SwitchLanguage(e, "zh-CN");
                 //AboutWindow aw = new AboutWindow();
                 //aw.ShowDialog();
+                var newNotification = new Notification()
+                {
+                    Title = "Test Fail",
+                    Message = "Test one Fail Please check your Machine Code and Try Again"
+                    // ,ImgURL = "pack://application:,,,a/Resources/Images/warning.png"
+                };
+                var notificationConfiguration = NotificationConfiguration.DefaultConfiguration;
+                notify.ShowNotificationWindow(newNotification, notificationConfiguration);
             });
             //Log.Error("Test2", "Test2");
             //var lst = Log.GetListErrors();

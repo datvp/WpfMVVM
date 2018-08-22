@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace zSpaceWinApp.Logs
 {
-    public class Log
+    public class Log: ILog
     {
-        private static bool CheckExist(string tableName, string colName, string colVal)
+        private bool CheckExist(string tableName, string colName, string colVal)
         {
             var query = $"SELECT {colName} FROM {tableName} WHERE {colName}=@colVal LIMIT 1";
             List<SQLiteParameter> param = new List<SQLiteParameter>();
@@ -21,7 +21,7 @@ namespace zSpaceWinApp.Logs
             var dt = DAL.GetList(query, param);
             return dt != null && dt.Rows.Count > 0;
         }
-        public static void Info(Model.DownHis m)
+        public void Info(Model.DownHis m)
         {            
             var query = "INSERT INTO DownHis(DriverName,TotalSize,Progress,Status,CreatedOn)VALUES(@DriverName,@TotalSize,@Progress,@Status,@CreatedOn)";
             var found = CheckExist("DownHis", "DriverName", m.DriverName);
@@ -38,7 +38,7 @@ namespace zSpaceWinApp.Logs
             DAL.ExecQuery(query, param);
         }
 
-        public static void Error(string err, string funcId)
+        public void Error(string err, string funcId)
         {
             if (string.IsNullOrEmpty(err) || string.IsNullOrEmpty(funcId)) return;
 
@@ -57,7 +57,7 @@ namespace zSpaceWinApp.Logs
             DAL.ExecQuery(query, param);
         }
 
-        public static ObservableCollection<Model.Errors> GetListErrors()
+        public ObservableCollection<Model.Errors> GetListErrors()
         {
             ObservableCollection<Model.Errors> collection = new ObservableCollection<Model.Errors>();
             string query = "Select * from Errors";
@@ -75,7 +75,7 @@ namespace zSpaceWinApp.Logs
             return collection;
         }
 
-        public static ObservableCollection<Model.DownHis> GetListDownHis()
+        public ObservableCollection<Model.DownHis> GetListDownHis()
         {
             ObservableCollection<Model.DownHis> collection = new ObservableCollection<Model.DownHis>();
             string query = "Select * from DownHis";

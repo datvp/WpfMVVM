@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="Resources/MainResources.xaml"></ResourceDictionary>
                 <ResourceDictionary Source="Resources/Resources.zh-CN.xaml"></ResourceDictionary>
                 <ResourceDictionary Source="Resources/Resources.en-US.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/zSpace.Notification;component/Assets/NotificationUI.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -11,6 +11,7 @@ namespace zSpaceWinApp.Processor
 {
     public class DownloadProcessor
     {
+        private ILog log = new Log();
         private readonly Queue<KeyValuePair<Delegate, object[]>> Queue = new Queue<KeyValuePair<Delegate, object[]>>();
         private HashSet<string> set = new HashSet<string>();
         private readonly object queueSync = new object();
@@ -67,7 +68,7 @@ namespace zSpaceWinApp.Processor
                 else if (threadDownloading.program.Status == Model.Program.PAUSE)
                 {
                     // write log
-                    Log.Info(new Model.DownHis() {
+                    log.Info(new Model.DownHis() {
                         DriverName = threadDownloading.program.ProgramName,
                         TotalSize = (int)threadDownloading.program.TotalSize,
                         Progress = threadDownloading.program.Progress,
