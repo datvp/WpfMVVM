@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -70,7 +71,7 @@ namespace zSpaceWinApp.Processor
         /// <param name="element"></param>
         public static void SetDefaultLanguage(FrameworkElement element)
         {
-            SetLanguageResourceDictionary(element, GetLocXAMLFilePath(getElementName(element), GetCurrentCultureName(element)));
+            SetLanguageResourceDictionary(element, GetLocXAMLFilePath(GetCurrentCultureName(element)));
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace zSpaceWinApp.Processor
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(inFiveCharLang);
 
-            SetLanguageResourceDictionary(element, GetLocXAMLFilePath(getElementName(element), inFiveCharLang));
+            SetLanguageResourceDictionary(element, GetLocXAMLFilePath(inFiveCharLang));
 
             // Save new culture info to registry
             RegistryKey UserPrefs = Registry.CurrentUser.OpenSubKey("zSpace" + @"\" + getAppName(element), true);
@@ -107,7 +108,7 @@ namespace zSpaceWinApp.Processor
         /// </summary>
         /// <param name="inFiveCharLang"></param>
         /// <returns></returns>
-        public static string GetLocXAMLFilePath(string element, string inFiveCharLang)
+        public static string GetLocXAMLFilePath(string inFiveCharLang)
         {
             string locXamlFile = "Resources." + inFiveCharLang + ".xaml";
             string directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
@@ -160,6 +161,30 @@ namespace zSpaceWinApp.Processor
             {
                 MessageBox.Show("'" + inFile + "' not found.");
             }
+        }
+
+        /// <summary>
+        /// Replace string into a file
+        /// </summary>
+        /// <param name="filename">full path</param>
+        /// <param name="oldValue">the current value</param>
+        /// <param name="newValue">the new value</param>
+        public static void ReplaceString(string filename, string oldValue, string newValue)
+        {
+            StreamReader sr = new StreamReader(filename);
+            string[] rows = Regex.Split(sr.ReadToEnd(), "\r\n");
+            sr.Close();
+
+            StreamWriter sw = new StreamWriter(filename);
+            for (int i = 0; i < rows.Length; i++)
+            {
+                if (rows[i].Contains(oldValue))
+                {
+                    rows[i] = rows[i].Replace(oldValue, newValue);
+                }
+                sw.WriteLine(rows[i]);
+            }
+            sw.Close();
         }
     }
 }

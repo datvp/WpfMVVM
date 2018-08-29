@@ -1,9 +1,3 @@
-D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\zSpace.Notification.csprojResolveAssemblyReference.cache
-D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\Assets\CloseButton.baml
-D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\Assets\NotificationItem.g.cs
-D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\GeneratedInternalTypeHelper.g.cs
-D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\zSpace.Notification_MarkupCompile.cache
-D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\zSpace.Notification_MarkupCompile.lref
 D:\zSpace\zSpaceWinApp\zSpace.Notification\bin\Debug\zSpace.Notification.dll.config
 D:\zSpace\zSpaceWinApp\zSpace.Notification\bin\Debug\zSpace.Notification.dll
 D:\zSpace\zSpaceWinApp\zSpace.Notification\bin\Debug\zSpace.Notification.pdb
@@ -11,6 +5,11 @@ D:\zSpace\zSpaceWinApp\zSpace.Notification\bin\Debug\Microsoft.Expression.Intera
 D:\zSpace\zSpaceWinApp\zSpace.Notification\bin\Debug\System.Windows.Interactivity.dll
 D:\zSpace\zSpaceWinApp\zSpace.Notification\bin\Debug\Microsoft.Expression.Interactions.xml
 D:\zSpace\zSpaceWinApp\zSpace.Notification\bin\Debug\System.Windows.Interactivity.xml
+D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\Assets\CloseButton.baml
+D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\Assets\NotificationItem.g.cs
+D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\zSpace.Notification_MarkupCompile.cache
+D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\zSpace.Notification_MarkupCompile.lref
 D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\Assets\NotificationItem.baml
 D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\Assets\NotificationUI.baml
 D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\zSpace.Notification.g.resources
@@ -18,3 +17,4 @@ D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\zSpace.Notification.Propert
 D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\zSpace.Notification.csproj.GenerateResource.Cache
 D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\zSpace.Notification.dll
 D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\zSpace.Notification.pdb
+D:\zSpace\zSpaceWinApp\zSpace.Notification\obj\Debug\zSpace.Notification.csprojResolveAssemblyReference.cache

@@ -107,6 +107,21 @@
             var match = Regex.Match(input, @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*", RegexOptions.IgnoreCase);
             return match.Success ? match.Value : string.Empty;
         }
+        /// <summary>
+        /// get string between strings
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public static string betweenStrings(this string text, string start, string end)
+        {
+            int p1 = text.IndexOf(start) + start.Length;
+            int p2 = text.IndexOf(end, p1);
+
+            if (end == "") return (text.Substring(p1));
+            else return text.Substring(p1, p2 - p1);
+        }
         #endregion
     }
 }

@@ -24,6 +24,15 @@ namespace zSpaceWinApp.ViewModel
         private MainModel _MainModel = new MainModel();
         private InstallUnInstallProcessor iup = new InstallUnInstallProcessor();
         private ObservableCollection<HardDriveModel> _hddCollection;
+        private ObservableCollection<LocModel> _LanguageCollection = new ObservableCollection<LocModel>();
+
+        public ObservableCollection<LocModel> LanguageCollection
+        {
+            get { return _LanguageCollection; }
+            set { _LanguageCollection = value; OnPropertyChanged(); }
+        }
+
+
         private ILog log { get; set; }
         
         public ObservableCollection<HardDriveModel> hddCollection
@@ -144,7 +153,10 @@ namespace zSpaceWinApp.ViewModel
             });
             
             EnglishCommand = new RelayCommand<FrameworkElement>((e) => { return true; }, (e) => {
-                LocUtil.SwitchLanguage(e, "en-US");             
+                LocUtil.SwitchLanguage(e, "en-US");
+                LanguageCollection = MainProcessor.getLanguages();
+                LanguageWindow lw = new LanguageWindow();                
+                lw.ShowDialog();           
             });
             ChinaCommand = new RelayCommand<FrameworkElement>((e) => { return true; }, (e) => {
                 LocUtil.SwitchLanguage(e, "zh-CN");
@@ -157,18 +169,24 @@ namespace zSpaceWinApp.ViewModel
                     // ,ImgURL = "pack://application:,,,a/Resources/Images/warning.png"
                 };
                 var notificationConfiguration = NotificationConfiguration.DefaultConfiguration;
-                notify.ShowNotificationWindow(newNotification, notificationConfiguration);
+                notify.Show(newNotification, notificationConfiguration);
+            });
+            SaveLanguageCommand = new RelayCommand<object>((p) => { return true; }, (p) => {
+                MainProcessor.SaveLanguage(this.LanguageCollection);
             });
             //Log.Error("Test2", "Test2");
             //var lst = Log.GetListErrors();
             initData();
             //iup.UnInstall("{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}");
+           
         }
         public ICommand CheckPowerStatusCommand { get; set; }
         public ICommand GetHDDInfoCommand { get; set; }
         public ICommand CheckInternetCommand { get; set; }
         public ICommand EnglishCommand { get; set; }
         public ICommand ChinaCommand { get; set; }
+
+        public ICommand SaveLanguageCommand { get; private set; }
 
         private Thread thProcess;
         public void ShowProcess()

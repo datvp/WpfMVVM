@@ -9,7 +9,7 @@ namespace zSpace.Notification.Services
         /// Show notification window.
         /// </summary>
         /// <param name="content">The notification object.</param>
-        public void ShowNotificationWindow(object content)
+        public void Show(object content)
         {
             NotifyBox.Show(content);
         }
@@ -19,7 +19,7 @@ namespace zSpace.Notification.Services
         /// </summary>
         /// <param name="content">The notification object.</param>
         /// <param name="configuration">The notification configuration object.</param>
-        public void ShowNotificationWindow(object content, NotificationConfiguration configuration)
+        public void Show(object content, NotificationConfiguration configuration)
         {
             NotifyBox.Show(content, configuration);
         }
@@ -27,7 +27,7 @@ namespace zSpace.Notification.Services
         /// <summary>
         ///  Remove all notifications from notification list and buffer list.
         /// </summary>
-        public void ClearNotifications()
+        public void Clear()
         {
             NotifyBox.ClearNotifications();
         }

@@ -1,0 +1,41 @@
+﻿<Window x:Class="zSpaceWinApp.LanguageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:zSpaceWinApp"
+        mc:Ignorable="d"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        
+        Name="languages"
+        DataContext="{StaticResource MainVM}"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen"
+        Title="LanguageWindow" Height="300" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Row="0"
+                  ItemsSource="{Binding LanguageCollection}" 
+                  CanUserReorderColumns="True" 
+                  CanUserResizeColumns="True" 
+                  CanUserResizeRows="False" 
+                  CanUserSortColumns="True">            
+        </DataGrid>
+        <Button Grid.Row="1"
+                Style="{StaticResource MaterialDesignRaisedButton}"
+                Content="Save"
+                Command="{Binding SaveLanguageCommand}">            
+        </Button>
+    </Grid>
+</Window>
