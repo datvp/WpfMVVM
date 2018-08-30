@@ -45,7 +45,7 @@ namespace zSpaceWinApp.ViewModel
                 var window = GetParentWindow(p);
                 var w = window as Window;
                 if (w != null)
-                {
+                {                    
                     if (w.WindowState != WindowState.Maximized)
                     {
                         IsMaximizeWindow = true;

@@ -174,6 +174,7 @@ namespace zSpaceWinApp.ViewModel
             SaveLanguageCommand = new RelayCommand<object>((p) => { return true; }, (p) => {
                 MainProcessor.SaveLanguage(this.LanguageCollection);
             });
+            
             //Log.Error("Test2", "Test2");
             //var lst = Log.GetListErrors();
             initData();
@@ -187,7 +188,7 @@ namespace zSpaceWinApp.ViewModel
         public ICommand ChinaCommand { get; set; }
 
         public ICommand SaveLanguageCommand { get; private set; }
-
+        
         private Thread thProcess;
         public void ShowProcess()
         {
