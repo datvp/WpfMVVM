@@ -16,7 +16,14 @@ namespace zSpaceWinApp.ViewModel
         public ICommand MaximizeWindowCommand { get; set; }
         public ICommand MouseMoveWindowCommand { get; set; }
         public ICommand MouseDoubleClickWindowCommand { get; set; }
+        private bool _IsMaximizeWindow;
 
+        public bool IsMaximizeWindow
+        {
+            get { return _IsMaximizeWindow; }
+            set { _IsMaximizeWindow = value; OnPropertyChanged(); }
+        }
+        
         public ControlBarViewModel()
         {
             MinimizeWindowCommand = new RelayCommand<UserControl>(p => { return true; }, p => {
@@ -41,10 +48,12 @@ namespace zSpaceWinApp.ViewModel
                 {
                     if (w.WindowState != WindowState.Maximized)
                     {
+                        IsMaximizeWindow = true;
                         w.WindowState = WindowState.Maximized;
                     }
                     else
                     {
+                        IsMaximizeWindow = false;
                         w.WindowState = WindowState.Normal;
                     }
                 }

@@ -33,6 +33,12 @@
                             <Setter Property="Background" Value="Transparent" />
                             <Setter Property="BorderThickness" Value="0"/>
                             <Setter Property="Width" Value="50"/>
+                            <Setter Property="ToolTip" Value="Maximize" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMaximizeWindow}" Value="True">
+                                    <Setter Property="ToolTip" Value="Restore" />
+                                </DataTrigger>
+                            </Style.Triggers>
                         </Style>
                     </StackPanel.Resources>
                     <Button ToolTip="Minimize"
@@ -40,10 +46,20 @@
                             CommandParameter="{Binding ElementName=ucControlBar}">
                         <materialDesign:PackIcon Kind="WindowMinimize" />
                     </Button>
-                    <Button ToolTip="Maximize"
-                            Command="{Binding MaximizeWindowCommand}"
-                            CommandParameter="{Binding ElementName=ucControlBar}">
-                        <materialDesign:PackIcon  Kind="WindowMaximize" />
+                    <Button Command="{Binding MaximizeWindowCommand}"
+                            CommandParameter="{Binding ElementName=ucControlBar}">                        
+                        <materialDesign:PackIcon>
+                            <materialDesign:PackIcon.Style>
+                                <Style TargetType="materialDesign:PackIcon">
+                                    <Setter Property="Kind" Value="WindowMaximize"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMaximizeWindow}" Value="True">
+                                            <Setter Property="Kind" Value="WindowRestore"/>
+                                        </DataTrigger>                                       
+                                    </Style.Triggers>
+                                </Style>
+                            </materialDesign:PackIcon.Style>
+                        </materialDesign:PackIcon>
                     </Button>
                     <Button ToolTip="Close"
                             Command="{Binding CloseWindowCommand}"
